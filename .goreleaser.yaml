@@ -17,10 +17,10 @@ builds:
 
 archives:
   - id: sitelist
-    formats: [tar.gz]
+    formats: [binary, tar.gz]
     format_overrides:
       - goos: windows
-        formats: [zip]
+        formats: [binary, zip]
 
 checksum:
   name_template: 'checksums.txt'
