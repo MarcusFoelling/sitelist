@@ -1,14 +1,12 @@
 [🇩🇪 Deutsch](README.de.md) | 🇬🇧 English
 
-# Go SiteList Editor
-A CLI tool for managing site entries in an XML file.
+# CLI Tool for managing Microsoft Edge Enterprise Site List (SiteList.xml) written in Go 
 ![Demo](./demo.gif)
 
-MS Edge (Windows Server 2022) kann angewiesen werden bestimmte Sites mittels `Internet Explorer Modus` zu öffnen. Dieses Feature ist bis mindestens 2029 verfügbar.
+Microsoft Edge can be configured to open certain websites in `Internet Explorer Mode` aka `Compatibility Mode.
+This tool creates and updates the required XML file while ensuring the correct syntax.
 
-Kann über GPO oder Registry gesteuert werden, `HKLM` hat Vorrang gegenüber `HKCU`.
-
-sitelist.xml (Name ist beliebig) anlegen und site -Einträge hinzufügen. Ein Eintrag gilt für alle darunter fallenden Domains. Die Datei kann beliebig platziert werden (lokal, Share, UNC, URI). 
+Example:
 ```XML
 <site-list version="2">
   <created-by>
@@ -16,30 +14,29 @@ sitelist.xml (Name ist beliebig) anlegen und site -Einträge hinzufügen. Ein Ei
     <version>1</version>
     <date-created>20260812.000000</date-created>
   </created-by>
-  <site url="nt.amprion.lan">
+  <site url="host.domain.tld">
     <compat-mode>IE11</compat-mode>
     <open-in>IE11</open-in>
   </site>
 </site-list>
 ```
 
-je nach Bedarf unterhalb HKLM oder HKCU Keys hinzufügen / entfernen
-```powershell
-Remove-ItemProperty -Path "HKLM:\SOFTWARE\Policies\Microsoft\Edge" -Name "InternetExplorerIntegrationLevel"
-```
+Deploy Microsoft Edge Policies (via Group Policy Object) or adjust the following registry keys to enable Enterprise Site List for Internet Explorer Compatibility.
+Settings can be made via HKLM or HKCU; HKLM takes precedence over HKCU. Adjust the path to your **SiteList.xml**. It can be located on a local drive, a network share, or web server.
 
 ```powershell
 $path = "HKCU:\SOFTWARE\Policies\Microsoft\Edge"
 New-Item -Path $path -Force
 New-ItemProperty -Path $path -Name "InternetExplorerIntegrationLevel" -PropertyType DWORD -Value 1 -Force
-New-ItemProperty -Path $path -Name "InternetExplorerIntegrationSiteList" -PropertyType String -Value "P:\sitelist.xml" -Force
+New-ItemProperty -Path $path -Name "InternetExplorerIntegrationSiteList" -PropertyType String -Value "C:\SiteList.xml" -Force
 ```
 
-prüfen über
+Use the following URI to check the content and settings of the currently loaded site list file:
 ```URI
 edge://policy/
 ```
 
+Check with following URI the content and settings of currently loaded sitelist file:
 ```URI
 edge://compat/enterprise
 ```
