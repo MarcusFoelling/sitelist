@@ -3,7 +3,7 @@
 # CLI Tool for managing Microsoft Edge Enterprise Site List (SiteList.xml) written in Go 
 ![Demo](./demo.gif)
 
-Microsoft Edge can be configured to open certain websites in `Internet Explorer Mode` aka `Compatibility Mode.
+Microsoft Edge can be configured to open certain websites in `Internet Explorer Mode` aka `Compatibility Mode`.
 This tool creates and updates the required XML file while ensuring the correct syntax.
 
 Example:
